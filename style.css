@@ -18,3 +18,9 @@ body{
     justify-content: center;
     align-items: center;
 }
+.X{
+    background-image: url('./img/cross.png');
+}
+.O{
+    background-image: url('./img/circle.png');
+}

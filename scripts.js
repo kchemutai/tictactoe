@@ -26,6 +26,7 @@ let game = ()=>{
         changePlayer()
         console.log(currentPlayer)
         displayedPlayer.innerHTML = currentPlayer
+        addImage(e.target)
     }
     handleClick()
 
@@ -37,6 +38,14 @@ let game = ()=>{
             currentPlayer='X'
         }
         return currentPlayer
+    }
+    let addImage = (element) => {
+        if(currentPlayer === 'O'){
+            element.classList.add('O')
+        }
+        else{
+            element.classList.add('X')
+        }
     }
 
 }
