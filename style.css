@@ -1,0 +1,20 @@
+.container{
+    height: 610px;
+    width: 610px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    background-color: black;
+}
+.container > div {
+    height: 200px;
+    width: 200px;
+    background-color: white;
+    margin-bottom: 5px;
+}
+body{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
