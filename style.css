@@ -24,3 +24,37 @@ body{
 .O{
     background-image: url('./img/circle.png');
 }
+
+.container  div.X, .container div.O {
+    pointer-events:none;
+}
+
+.winning-message{
+    display: none;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.9);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 5rem;
+}
+.winning-message button{
+    background-color: white;
+    font-size: 3rem;
+    border: 1px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.winning-message button:hover{
+    background-color: black;
+    color: white;
+    border-color: white;
+}
+.winning-message.show{
+    display: flex;
+}
