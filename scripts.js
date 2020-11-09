@@ -1,74 +1,57 @@
-let game = ()=>{
+
     const container = document.querySelector('.container')
-    let displayedPlayer = document.querySelector('#player')
+    let turnMessage = document.querySelector('#player')
     let winningMessage = document.querySelector('.winning-message')
     let winningMessageText = document.querySelector('.winning-message-text')
     let restartButton = document.querySelector('.restartbutton')
-    let currentPlayer = 'x'
+    let currentPlayer = 'X'
     let board 
-    board = ['','','','','','','','','']
-    let render = () => {
-        //create 9 divs and append to the board
-        for(let i=0; i<9; i++){
-            let grid = document.createElement('div')
-            container.appendChild(grid)
-        }
-        
-    }
-    render()
     const squares = document.querySelectorAll('.container div')
 
-    let restartGame  = () =>{
-        currentPlayer = "X";
-        board = ["", "", "", "", "", "", "", "", ""];
-        render()
-    }
-
-    let handleClick = () =>{
-        console.log(squares)
-        squares.forEach(square => {
-            square.addEventListener('click', clickedIndex)
-        })
-    }
-    let clickedIndex = (e)=>{
-        let  squaresArray = Array.from(squares)
+    restartButton.addEventListener('click', startGame)
+   
+    function handleClick (e){
+        squaresArray = [...squares]
         let index = squaresArray.indexOf(e.target)
-        console.log(index)
-        changePlayer()
-        console.log(currentPlayer)
-        displayedPlayer.innerHTML = currentPlayer
-        addImage(e.target)
-        board[index]=currentPlayer
-        console.log(board)
-        let winner = checkWin()
-        if(winner){
-            let message
-            message = winner==='X'||winner==='O'? `${winner} Won`: winner ==='Tie'? 'Its a Draw':''
-            winningMessageText.textContent = message
-            winningMessage.classList.add('show')
-        }
-    }
-    handleClick()
+        let div = squaresArray[index]
 
-    let changePlayer = () =>{
-        if(currentPlayer==='X'){
-            currentPlayer='O';
+        //place mark
+        placeMark(div, currentPlayer, index)
+
+        //check for win
+        let winner = check_Win_or_Draw()
+        if(winner){
+            showWinningMessage(winner)
         }
-        else{
-            currentPlayer='X'
+        else {
+            // switch turns
+            switchTurns()
         }
+
+
+
+    }
+
+    //places the mark on the board using index and adds an image to the div in the html
+    function placeMark(element, currentPlayer, index){
+        //place in UI
+        element.classList.add(currentPlayer)
+
+        //place in the board
+        board[index] = currentPlayer
+
+        console.log(board)
+    }
+
+    //changes players and updates the turns message
+    function switchTurns(){
+        currentPlayer = currentPlayer === 'X'? 'O':'X'
+        turnMessage.innerHTML = `It is ${currentPlayer}'s Turn`
         return currentPlayer
     }
-    let addImage = (element) => {
-        if(currentPlayer === 'O'){
-            element.classList.add('O')
-        }
-        else{
-            element.classList.add('X')
-        }
-    }
 
-    let checkWin=()=>{
+    //checks for a win and draw
+    function check_Win_or_Draw(){
         let winner = null
         let winningCombinations=[
             [0, 1, 2],
@@ -87,9 +70,27 @@ let game = ()=>{
             }    
         })
         return winner = winner? winner : board.includes('')? null: 'Tie'
-        console.log(winner)
+    }
+    
+    // shows the winning message in the UI
+    function showWinningMessage(winner){
+        let message
+        message = winner==='X'||winner==='O'? `${winner} Won`: winner ==='Tie'? 'Its a Draw':''
+        winningMessageText.textContent = message
+        winningMessage.classList.add('show')
     }
 
-
-}
-document.addEventListener('DOMContentLoaded', game)
+    // starts the game and resets previous state
+    function startGame(){
+        board = ['','','','','','','','','']
+        winningMessage.classList.remove('show')
+        squares.forEach(square =>{
+            square.classList.remove('O')
+            square.classList.remove('X')
+            square.removeEventListener('click', handleClick)
+            square.addEventListener('click', handleClick, {once: true})
+        })
+    }
+    
+    startGame()
+    
